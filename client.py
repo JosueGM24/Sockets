@@ -20,12 +20,11 @@ def main():
         BUFSIZE=256
         payload='HOLAAAA'
         socket_cliente.connect((target_host,int(target_port)))
-        while True:
-            print("socket conectado a ",target_host)
-            socket_cliente.send(payload.encode('utf-8'))
-            print("mensaje del servidor")
-            data=socket_cliente.recv(BUFSIZE)
-            print(data)
+        print("socket conectado a ",target_host)
+        socket_cliente.send(payload.encode('utf-8'))
+        print("mensaje del servidor")
+        data=socket_cliente.recv(BUFSIZE)
+        print(data)
     except KeyboardInterrupt:
         print("Conexion terminada por el usuario")
         sys.exit()
