@@ -1,13 +1,12 @@
-#reciber
 import socket
 import struct
+
 def evaluar_operacion(operacion):
     try:
         resultado = eval(operacion)
         return resultado
     except Exception as e:
         return str(e)
-
 
 def decimal_a_hexadecimal_con_fraccion(numero_decimal):
     if not isinstance(numero_decimal, (int, float)):
@@ -46,10 +45,12 @@ MCAST_PORT = 5004
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-sock.bind(('', MCAST_PORT))
+sock.bind(('10.0.0.1', MCAST_PORT))  # Cambia la IP a 10.0.0.1
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
 while True:
-    print(decimal_a_hexadecimal_con_fraccion(evaluar_operacion(sock.recv(10240))))
+    data, _ = sock.recvfrom(10240)
+    operacion = data.decode()  # Decodificar la operación recibida
+    print(decimal_a_hexadecimal_con_fraccion(evaluar_operacion(operacion)))

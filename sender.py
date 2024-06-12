@@ -1,36 +1,29 @@
 import socket
 
-def evaluar_operacion(operacion):
-    try:
-        resultado = eval(operacion)
-        return resultado
-    except Exception as e:
-        return str(e)
-
-
-def decimal_a_hexadecimal(numero_decimal):
-    try:
-        hexadecimal = hex(numero_decimal)
-        return hexadecimal
-    except Exception as e:
-        return str(e)
-
-
-group = '224.1.1.1'
-port = 5004
-
-# 2-hop restriction in network
-ttl = 2
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
-
-# Pide por teclado la operacion y envíalo por el socket sustituyendo el mensaje "hello world"
-while True:
-    operacion = input("Ingrese una operación aritmética (o 'salir' para terminar): ")
-    if operacion.lower() == 'salir':
-        break
+def main():
+    multicast_group = '224.1.1.1'  # Dirección del grupo multicast
+    port_5004 = 5004                # Puerto para el primer receptor
+    port_5000 = 5000                # Puerto para el segundo receptor
     
-    sock.sendto(operacion.encode(), (group, port))
+    # Crear el socket UDP
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
-sock.close()
+    while True:
+        # Pedir la operación por teclado
+        operacion = input("Ingrese una operación aritmética (o 'salir' para terminar): ")
+        if operacion.lower() == 'salir':
+            break
+        
+        # Enviar la operación al primer receptor
+        sock.sendto(operacion.encode(), (multicast_group, port_5004))
+        
+        # Enviar la operación al segundo receptor
+        sock.sendto(operacion.encode(), (multicast_group, port_5000))
+        
+        # Recibir la respuesta del servidor (si hay alguna lógica de recepción)
+        # No implementado porque solo estamos enviando
+
+    sock.close()
+
+if _name_ == "_main_":
+    main()
