@@ -57,18 +57,21 @@ def decimal_a_hexadecimal_con_fraccion(numero_decimal):
     resultado_hex = f"{parte_entera_hex}.{parte_fraccionaria_hex}"
     return resultado_hex
 
-MCAST_GRP = '224.1.1.1'
-MCAST_PORT = 5000
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
+# Enlazar a INADDR_ANY para recibir paquetes en todas las interfaces
 sock.bind(('', MCAST_PORT))
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
+print(f"Unido al grupo multicast {MCAST_GRP} en el puerto {MCAST_PORT}")
+
 while True:
+    print("Esperando datos...")
     data, _ = sock.recvfrom(10240)
+    print("Datos recibidos")
     operacion = data.decode()  # Decodificar la operación recibida
-    print(numero_a_palabras(evaluar_operacion(operacion)))
+    print(f"Operación recibida: {operacion}")
+    print("Resultado en palabras:", numero_a_palabras(evaluar_operacion(operacion)))
