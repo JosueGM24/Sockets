@@ -18,11 +18,15 @@ def main():
         
         # Enviar la operación al primer grupo multicast (IPs 10.x.x.x)
         sock.sendto(operacion.encode(), (multicast_group_1, port_5004))
-        sock.sendto(operacion.encode(), (multicast_group_1, port_5004))
+        print(f"Enviado a {multicast_group_1}:{port_5004}")
+        sock.sendto(operacion.encode(), (multicast_group_1, port_5000))
+        print(f"Enviado a {multicast_group_1}:{port_5000}")
         
         # Enviar la operación al segundo grupo multicast (IPs 11.x.x.x)
+        sock.sendto(operacion.encode(), (multicast_group_2, port_5004))
+        print(f"Enviado a {multicast_group_2}:{port_5004}")
         sock.sendto(operacion.encode(), (multicast_group_2, port_5000))
-        sock.sendto(operacion.encode(), (multicast_group_2, port_5000))
+        print(f"Enviado a {multicast_group_2}:{port_5000}")
         
         # Recibir la respuesta del servidor (si hay alguna lógica de recepción)
         # No implementado porque solo estamos enviando

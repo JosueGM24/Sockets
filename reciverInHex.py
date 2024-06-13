@@ -45,12 +45,17 @@ MCAST_PORT = 5004
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-sock.bind(('10.0.0.1', MCAST_PORT))  # Cambia la IP a 10.0.0.1
+sock.bind(('10.0.0.2', MCAST_PORT))  # Cambia la IP a 10.0.0.2
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
+print(f"Unido al grupo multicast {MCAST_GRP} en el puerto {MCAST_PORT}")
+
 while True:
+    print("Esperando datos...")
     data, _ = sock.recvfrom(10240)
+    print("Datos recibidos")
     operacion = data.decode()  # Decodificar la operación recibida
-    print(decimal_a_hexadecimal_con_fraccion(evaluar_operacion(operacion)))
+    print(f"Operación recibida: {operacion}")
+    print("Resultado en hexadecimal:", decimal_a_hexadecimal_con_fraccion(evaluar_operacion(operacion)))
