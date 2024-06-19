@@ -7,7 +7,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <math.h>
 
 int isDigit(char c) {
     return (c >= '0' && c <= '9');
@@ -82,6 +81,14 @@ char* convertToHexaOfDecimal(double number) {
     return hexa;
 }
 
+double power(double base, int exponent) {
+    double result = 1.0;
+    for (int i = 0; i < exponent; i++) {
+        result *= base;
+    }
+    return result;
+}
+
 double evaluateExpression(const char* expression) {
     double operandStack[100];
     int operandTop = -1;
@@ -98,13 +105,13 @@ double evaluateExpression(const char* expression) {
         
         if (isDigit(expression[i]) || expression[i] == '.') {
             double operand = 0;
-            int decimalPlace = 0;
+            int decimalPlace = -1;
             while (isDigit(expression[i]) || expression[i] == '.') {
                 if (expression[i] == '.') {
                     decimalPlace = 1;
                 } else {
-                    if (decimalPlace) {
-                        operand += charToInt(expression[i]) * pow(10, -decimalPlace);
+                    if (decimalPlace > 0) {
+                        operand += charToInt(expression[i]) / power(10, decimalPlace);
                         decimalPlace++;
                     } else {
                         operand = operand * 10 + charToInt(expression[i]);
@@ -225,7 +232,7 @@ int main() {
     }
 
     printf("Joined multicast group %s on port %d\n", MCAST_GRP, MCAST_PORT);
-    operaciones("30.2*103.5",NULL);
+    operaciones("30.2*103.5", NULL);
     while (1) {
         printf("Waiting for data...\n");
         ssize_t bytes_received = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&addr, &addrlen);
