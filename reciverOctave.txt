@@ -1,0 +1,30 @@
+clc;
+clear;
+
+function reciverInHex()
+  archivo_operacion = 'operacion.txt';
+
+  while true
+    if exist(archivo_operacion, 'file')
+      operacion = fileread(archivo_operacion);
+      printf("Operación recibida: %s\n", operacion);
+      resultado = evalc(operacion);
+      printf("Resultado en palabras: %s\n", resultado);
+
+      delete(archivo_operacion);
+    else
+      pause(1);
+    end
+  end
+endfunction
+
+function palabras = numero_a_palabras(numero)
+
+  palabras = num2str(numero);
+end
+
+function resultado = evaluar_operacion(operacion)
+  resultado = eval(operacion);
+end
+
+reciverInHex();
