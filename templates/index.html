@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>File Upload</title>
+  </head>
+  <body>
+    <h1>Upload a file</h1>
+    <form method="post" enctype="multipart/form-data" action="/upload">
+      <input type="file" name="file">
+      <label for="group">Select Group:</label>
+      <select name="group">
+        <option value="224.1.1.1">Group 1 (224.1.1.1)</option>
+        <option value="224.1.1.2">Group 2 (224.1.1.2)</option>
+      </select>
+      <input type="submit" value="Upload">
+    </form>
+    <h2>Files received by Group 1</h2>
+    <ul>
+      {% for file in files_group_1 %}
+      <li>
+        {{ file }}
+        <a href="{{ url_for('delete_file', group='224.1.1.1', filename=file) }}">Delete</a>
+      </li>
+      {% endfor %}
+    </ul>
+    <h2>Files received by Group 2</h2>
+    <ul>
+      {% for file in files_group_2 %}
+      <li>
+        {{ file }}
+        <a href="{{ url_for('delete_file', group='224.1.1.2', filename=file) }}">Delete</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

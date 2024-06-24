@@ -1,8 +1,10 @@
 import socket
 
 def main():
-    multicast_group_1 = '224.1.1.1'  # Grupo multicast para las IPs 10.x.x.x
-    multicast_group_2 = '224.1.1.2'  # Grupo multicast para las IPs 11.x.x.x
+    multicast_group_1 = '224.1.1.1' 
+    multicast_group_2 = '224.1.1.2' 
+    multicast_group_2 = '224.1.1.3' 
+    multicast_group_2 = '224.1.1.4' 
     
     port_5004 = 5004  # Puerto para el primer receptor
     port_5000 = 5000  # Puerto para el segundo receptor
